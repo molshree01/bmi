@@ -1,29 +1,59 @@
 <!DOCTYPE html>
 <html>
-<body>
+<head>
+    <title>BMI App</title>
+</head>
+<body style="font-family: Arial; padding: 20px;">
 
-<h2>BMI Calculator</h2>
+    <!-- LOGIN -->
+    <div id="login">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Enter Email"><br><br>
+        <input type="password" id="password" placeholder="Enter Password"><br><br>
+        <button onclick="login()">Login</button>
+    </div>
 
-<input id="name" placeholder="Name"><br><br>
-<input id="age" placeholder="Age"><br><br>
-<input id="weight" placeholder="Weight (kg)"><br><br>
-<input id="height" placeholder="Height (m)"><br><br>
+    <!-- BMI FORM -->
+    <div id="bmi" style="display:none;">
+        <h2>BMI Calculator</h2>
+        <input type="text" id="name" placeholder="Name"><br><br>
+        <input type="number" id="age" placeholder="Age"><br><br>
+        <input type="number" id="weight" placeholder="Weight (kg)"><br><br>
+        <input type="number" id="height" placeholder="Height (cm)"><br><br>
+        <button onclick="calculateBMI()">Calculate</button>
 
-<button onclick="calculateBMI()">Calculate</button>
-
-<p id="result"></p>
+        <h3 id="result"></h3>
+    </div>
 
 <script>
+function login() {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    if(email && password) {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("bmi").style.display = "block";
+    } else {
+        alert("Enter email and password");
+    }
+}
+
 function calculateBMI() {
     let name = document.getElementById("name").value;
     let age = document.getElementById("age").value;
     let weight = document.getElementById("weight").value;
-    let height = document.getElementById("height").value;
+    let height = document.getElementById("height").value / 100;
 
-    let bmi = weight / (height * height);
+    let bmi = (weight / (height * height)).toFixed(2);
 
-    document.getElementById("result").innerText =
-        name + " (Age " + age + "), BMI = " + bmi.toFixed(2);
+    let category = "";
+
+    if (bmi < 18.5) category = "Underweight";
+    else if (bmi < 25) category = "Normal";
+    else category = "Overweight";
+
+    document.getElementById("result").innerHTML =
+        name + " (Age " + age + "), BMI = " + bmi + " → " + category;
 }
 </script>
 
