@@ -2,37 +2,107 @@
 <html>
 <head>
     <title>BMI App</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4facfe;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #007bff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #result {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+
 </head>
-<body style="font-family: Arial; padding: 20px;">
+<body>
+
+<div class="card">
 
     <!-- LOGIN -->
     <div id="login">
         <h2>Login</h2>
-        <input type="email" id="email" placeholder="Enter Email"><br><br>
-        <input type="password" id="password" placeholder="Enter Password"><br><br>
+        <input type="email" id="email" placeholder="Enter Email">
+        <input type="password" id="password" placeholder="Enter Password">
         <button onclick="login()">Login</button>
     </div>
 
-    <!-- BMI FORM -->
-    <div id="bmi" style="display:none;">
+    <!-- BMI -->
+    <div id="bmi" class="hidden">
         <h2>BMI Calculator</h2>
-        <input type="text" id="name" placeholder="Name"><br><br>
-        <input type="number" id="age" placeholder="Age"><br><br>
-        <input type="number" id="weight" placeholder="Weight (kg)"><br><br>
-        <input type="number" id="height" placeholder="Height (cm)"><br><br>
+
+        <input type="text" id="name" placeholder="Name">
+        <input type="number" id="age" placeholder="Age">
+
+        <label>Gender:</label><br>
+        <input type="radio" name="gender" value="Male"> Male
+        <input type="radio" name="gender" value="Female"> Female
+        <br><br>
+
+        <input type="number" id="weight" placeholder="Weight (kg)">
+        <input type="number" id="height" placeholder="Height (cm)">
+
         <button onclick="calculateBMI()">Calculate</button>
 
-        <h3 id="result"></h3>
+        <div id="result"></div>
     </div>
 
+</div>
+
 <script>
+
 function login() {
     let email = document.getElementById("email").value;
     let password = document.getElementById("password").value;
 
     if(email && password) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("bmi").style.display = "block";
+        document.getElementById("login").classList.add("hidden");
+        document.getElementById("bmi").classList.remove("hidden");
     } else {
         alert("Enter email and password");
     }
@@ -44,17 +114,26 @@ function calculateBMI() {
     let weight = document.getElementById("weight").value;
     let height = document.getElementById("height").value / 100;
 
+    let gender = document.querySelector('input[name="gender"]:checked');
+
+    if (!gender) {
+        alert("Please select gender");
+        return;
+    }
+
+    gender = gender.value;
+
     let bmi = (weight / (height * height)).toFixed(2);
 
     let category = "";
-
     if (bmi < 18.5) category = "Underweight";
     else if (bmi < 25) category = "Normal";
     else category = "Overweight";
 
     document.getElementById("result").innerHTML =
-        name + " (Age " + age + "), BMI = " + bmi + " → " + category;
+        `${name} (${gender}, Age ${age})<br>BMI = ${bmi} → ${category}`;
 }
+
 </script>
 
 </body>
